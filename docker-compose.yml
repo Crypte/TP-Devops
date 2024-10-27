@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  backend:
+    build: ./simple-api-student-main  # chemin du Dockerfile du backend
+    networks:
+      - my-network
+    depends_on:
+      - database
+
+  database:
+    build: ./database  # chemin du Dockerfile de la base de données
+    networks:
+      - my-network
+
+  front:
+    build: ./front  # chemin du Dockerfile pour le serveur httpd
+    ports:
+      - "80:80"  # mappe le port 80 de l’hôte vers le conteneur
+    networks:
+      - my-network
+    depends_on:
+      - backend
+      - database
+
+networks:
+  my-network:
